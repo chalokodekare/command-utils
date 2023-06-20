@@ -1,0 +1,25 @@
+version: "3.0"
+services:
+  mysql:
+    image: mysql:5.7.26
+    command: --lower_case_table_names=1
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"
+      MYSQL_USER: test
+      MYSQL_PASSWORD: password
+    ports:
+      - 3306:3306
+    networks:
+      - test
+    volumes:
+      - /C/test-docker/volume/mysql-5.7.26:/var/lib/mysql
+      - /C/Users/Git/Projects/github/schema:/var/schema/schema
+      - ./my.conf:/etc/mysql/my.conf
+    # ulimits:
+    #   soft: 20000
+    #   hard: 40000
+
+networks:
+  test:
+    external:
+      name: test

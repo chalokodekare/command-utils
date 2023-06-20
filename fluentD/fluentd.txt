@@ -1,0 +1,106 @@
+FluentD
+---------------------------
+kubectl get namespaces
+
+namespace.json
+{
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": {
+        "name": "test-logging",
+        "labels": {
+            "name": "test-logging"
+        }
+    }
+}
+
+kubectl create -f namespace.json
+
+-------------------
+
+kubectl create -f service-es.yml 
+OR 
+kubectl apply -n test-logging -f service-es.yml
+
+kubectl get services --namespace=test-logging
+
+--------------------
+
+kubectl create -f deploy-es.yml
+OR
+kubectl apply -n test-logging -f deploy-es.yml
+
+kubectl get pods -n test-logging
+
+kubectl delete -n test-logging deployment elasticsearch-deployment
+
+kubectl port-forward elasticsearch-76559d8df-vzgfm 9200:9400 --namespace=test-logging
+
+curl http://localhost:9400/_cluster/state?pretty
+--------------------------------------------
+
+kubectl create -f deploy-kibana.yml
+
+OR
+
+kubectl apply -n test-logging -f deploy-kibana.yml
+
+kubectl port-forward kibana-6b975c7945-nf8rv 5601:5601 --namespace=test-logging
+
+------------------------------------------------
+
+docker build -f Dockerfile -t test-fluentd .
+
+-----------------------------------------------------
+kubectl create -f fluentd.yml
+OR
+kubectl apply -n test-logging -f fluentd.yml
+
+kubectl get ds --namespace=test-logging
+
+kubectl delete --all daemonset.apps -n test-logging
+
+kubectl describe pod fluentd-7tdkn -n test-logging
+
+
+----------------------------------------------------
+
+use local docker image in kubernetes
+
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
+
+docker tag test-fluentd localhost:5000/test-fluentd
+
+docker push localhost:5000/test-fluentd
+
+------------------------------------------------------
+
+
+
+Extra:
+
+kubectl get services --namespace=test-logging
+kubectl get pods --namespace=test-logging
+
+o/p
+kibana-66fc5bd4d6-stxgl
+
+kubectl port-forward kibana-66fc5bd4d6-stxgl 5601:5601 --namespace=test-logging
+ 
+http://localhost:5601
+
+
+kubectl delete namespace/test-logging
+
+
+
+
+-----------------------------------------------------------------
+
+HELM
+
+kubectl create namespace logging
+
+kubectl apply -f fluentd-helm.yml
+
+helm install --name logging ./logging

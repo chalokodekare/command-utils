@@ -1,0 +1,157 @@
+FluentD
+---------------------------
+kubectl get namespaces
+
+namespace.json
+{
+    "apiVersion": "v1",
+    "kind": "Namespace",
+    "metadata": {
+        "name": "test-logging",
+        "labels": {
+            "name": "test-logging"
+        }
+    }
+}
+
+kubectl create -f namespace.json
+
+-------------------
+
+kubectl create -f service-es.yml
+OR
+kubectl apply -n test-logging -f service-es.yml
+
+kubectl get services --namespace=test-logging
+
+--------------------
+
+kubectl create -f deploy-es.yml
+OR
+kubectl apply -n test-logging -f deploy-es.yml
+
+kubectl get pods -n test-logging
+
+kubectl delete -n test-logging deployment elasticsearch-deployment
+
+kubectl port-forward elasticsearch-76559d8df-vzgfm 9200:9400 --namespace=test-logging
+
+curl http://localhost:9400/_cluster/state?pretty
+--------------------------------------------
+
+kubectl create -f deploy-kibana.yml
+
+OR
+
+kubectl apply -n test-logging -f deploy-kibana.yml
+
+kubectl port-forward kibana-6b975c7945-nf8rv 5601:5601 --namespace=test-logging
+
+------------------------------------------------
+
+docker build -f Dockerfile -t test-fluentd .
+
+-----------------------------------------------------
+kubectl create -f fluentd.yml
+OR
+kubectl apply -n test-logging -f fluentd.yml
+
+kubectl get ds --namespace=test-logging
+
+kubectl delete --all daemonset.apps -n test-logging
+
+kubectl describe pod fluentd-7tdkn -n test-logging
+
+
+----------------------------------------------------
+
+use local docker image in kubernetes
+
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
+
+docker tag test-fluentd localhost:5000/test-fluentd
+
+docker push localhost:5000/test-fluentd
+
+------------------------------------------------------
+
+
+
+Extra:
+
+kubectl get services --namespace=test-logging
+kubectl get pods --namespace=test-logging
+
+o/p
+kibana-66fc5bd4d6-stxgl
+
+kubectl port-forward kibana-66fc5bd4d6-stxgl 5601:5601 --namespace=test-logging
+
+http://localhost:5601
+
+
+kubectl delete namespace/test-logging
+
+
+kubectl get pods -n default --no-headers=true | awk '/web-app/{print $1}'| xargs  kubectl delete -n default pod
+
+
+
+
+-----------------------------------------------------------------
+
+HELM
+
+kubectl create namespace logging
+
+kubectl apply -f fluentd-helm.yml
+
+helm install --name logging ./logging
+
+
+
+deploy kubernetes dashboard
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.4.0/aio/deploy/recommended.yaml
+
+
+kubectl proxy
+
+dashboard:
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/.
+
+
+kubectl create serviceaccount ritu
+
+kubectl create clusterrolebinding ritu --clusterrole=cluster-admin --serviceaccount=default:ritu
+
+kubectl get secrets
+
+kubectl describe secret ritu-token-hklx6
+
+
+-----------------------------------------------------------------
+
+
+AKS/K8S
+Restart a pod
+
+kubectl delete pods -n <name-space> <pod-name>
+
+
+Restart a service
+
+kubectl delete pods -n <name-space> -l app=<service-name>
+
+
+Open a bash shell in a pod
+
+kubectl exec -ti -n <name-space> <pod-name> -- /bin/bash
+From here you can perform typical *nix commands for navigation, listing, ...etc.
+
+
+
+Copy a file (e.g. process-model) from any pod (because, the process model is in the shared volume)
+
+kubectl cp -n <name-space> <pod>:/test/processModel/<tid>/process-model.zip <local path in *nix style>
+reverse the order of files to copy to a pod

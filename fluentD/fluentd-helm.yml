@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+# update the name if it's different
+name: container-repo
+namespace: logging
+type: kubernetes.io/dockerconfigjson
+data:
+.dockerconfigjson: xVV3d3YURrM2REaGtRM0JpTldWT1lXaE1WejAxUVZOMk9VaFBXbFk9In19fQ==

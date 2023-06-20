@@ -1,0 +1,217 @@
+version: "3.0"
+services:
+  ignite-service:
+    image: ignite:latest
+    deploy:
+      resources:
+        limits:
+          memory: 3G
+    ports:
+      - 33331:33331
+      - 33332:33332
+    environment:
+      - oauth2_jwt_key=123
+      - datasource_schema_url=jdbc:mysql://mysql:3306/schema
+      - spring_datasource_url=mysql://mysql:3306/schema
+      - JVM_OPTS=-Xms256m -Xmx1024m
+      - DEBUG_PORT=33332
+      - JAVA_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:33332
+    networks:
+      - test
+    env_file:
+      - ./test.env
+    depends_on:
+      - config
+    volumes:
+      - /c/test-docker:/test:rw
+      - /c/test-docker:/test:rw
+
+  transportation-service:
+    image: transportation-service:latest
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    ports:
+      - 9976:9976
+      - 19976:19976
+    environment:
+      - es_hosts=http://elasticsearch:9200,http://elasticsearch:9300
+      - DEBUG_PORT=19976
+      - JAVA_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:19976
+    networks:
+      - test
+    env_file:
+      - ./test.env
+    depends_on:
+      - config
+    volumes:
+      - /c/test-docker:/test:rw
+      - /c/test-docker:/test:rw
+
+  search-sync-service:
+    image: search-sync-service:latest
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    ports:
+      - 3333:3333
+      - 13333:13333
+    environment:
+      - es_hosts=http://elasticsearch:9200,http://elasticsearch:9300
+      - datasource_a4b7a825f67930965747445709011120_url=jdbc:mysql://mysql:3306/a4b7a825f67930965747445709011120
+      - spring_datasource_url=mysql://mysql:3306/a4b7a825f67930965747445709011120
+      - DEBUG_PORT=13333
+      - JAVA_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:13333
+    networks:
+      - test
+    env_file:
+      - ./test.env
+    depends_on:
+      - config
+    volumes:
+      - /c/test-docker:/test:rw
+      - /c/test-docker:/test:rw
+
+  process-model-service:
+    image: process-model-service:latest
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+    ports:
+      - 5555:5555
+      - 15555:15555
+    environment:
+      - DEBUG_PORT=15555
+      - JAVA_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:15555
+    networks:
+      - test
+    env_file:
+      - ./test.env
+    depends_on:
+      - config
+    volumes:
+      - /c/test-docker:/test:rw
+      - /c/test-docker:/test:rw
+
+  staticdata-service:
+    image: staticdata-service:latest
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+    ports:
+      - 9977:9977
+      - 19977:19977
+    environment:
+      - DEBUG_PORT=19977
+      - JAVA_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:19977
+    networks:
+      test:
+        aliases:
+          - staticdata-service
+    env_file:
+      - ./test.env
+    depends_on:
+      - config
+    volumes:
+      - /c/test-docker:/test:rw
+      - /c/test-docker:/test:rw
+
+  order-service:
+    image: order-service:latest
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+    ports:
+      - 3131:3131
+      - 13131:13131
+    environment:
+      - es_hosts=http://elasticsearch:9200,http://elasticsearch:9300
+      - DEBUG_PORT=13131
+      - JAVA_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:13131
+    networks:
+      - test
+    env_file:
+      - ./test.env
+    depends_on:
+      - config
+    volumes:
+      - /c/test-docker:/test:rw
+      - /c/test-docker:/test:rw
+
+  node-service:
+    image: node-service:latest
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+    ports:
+      - 9191:9191
+      - 19191:19191
+    environment:
+      - es_hosts=http://elasticsearch:9200,http://elasticsearch:9300
+      - DEBUG_PORT=19191
+      - JAVA_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:19191
+    networks:
+      - test
+    env_file:
+      - ./test.env
+    depends_on:
+      - config
+    volumes:
+      - /c/test-docker:/test:rw
+      - /c/test-docker:/test:rw
+
+  computation-backend:
+    image: computation-backend:latest
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+    ports:
+      - 8130:8130
+      - 18130:18130
+    environment:
+      - es_hosts=http://elasticsearch:9200,http://elasticsearch:9300
+      - DEBUG_PORT=18130
+      - JAVA_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:18130
+    networks:
+      - test
+    env_file:
+      - ./test.env
+    depends_on:
+      - config
+    volumes:
+      - /c/test-docker:/test:rw
+      - /c/test-docker:/test:rw
+
+  computation-frontend:
+    image: computation-frontend:latest
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+    ports:
+      - 8129:8129
+      - 18129:18129
+    environment:
+      - es_hosts=http://elasticsearch:9200,http://elasticsearch:9300
+      - DEBUG_PORT=18129
+      - JAVA_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:18129
+    networks:
+      - test
+    env_file:
+      - ./test.env
+    depends_on:
+      - config
+    volumes:
+      - /c/test-docker:/test:rw
+      - /c/test-docker:/test:rw
+networks:
+  test:
+    external:
+      name: test

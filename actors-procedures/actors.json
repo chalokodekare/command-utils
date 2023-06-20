@@ -1,0 +1,430 @@
+{
+  "entities": [
+    {
+      "name": "DummyActorSiva",
+      "displayName": "Dummy Actor Completed",
+      "description": "Dummy Actor Completed",
+      "group": "POS",
+      "type": "Http",
+      "config": {
+        "domainUrl": "/test/foundation-procedure-orchestration/v1dev",
+        "endpoint": "/dummyRuns/completedStatus",
+        "method": "POST",
+        "queryParams": [
+          ""
+        ],
+        "pathParams": [
+          ""
+        ],
+        "headers": [
+          "Authorization",
+          "IDENTITY-CONTEXT"
+        ]
+      },
+      "input": {
+        "root": {
+          "prop2": "@{prop2}",
+          "prop1": "@{prop1}",
+          "returnStatus": "@{returnStatus}"
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "statusUrl": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "isAsync": true,
+      "asyncStatusUrlProperty": null,
+      "asyncCompletedStatusLabel": null,
+      "asyncResponseIdLabel": null,
+      "actorType": "EXTERNAL",
+      "asyncTimeout": 300,
+      "asyncPollFrequency": 10,
+      "defVersion": "1.0.0"
+    },
+    {
+      "name": "Create_sparq_SCN_NEW",
+      "displayName": "Create Sparq Scenario",
+      "description": "Create Sparq Scenario",
+      "group": "Simulation",
+      "type": "Http",
+      "config": {
+        "domainUrl": "/test-supply/sparq-icon/v1",
+        "endpoint": "/sparqEngines/{instanceId}/createScenario",
+        "method": "POST",
+        "queryParams": [
+          ""
+        ],
+        "pathParams": [
+          "instanceId"
+        ],
+        "headers": [
+          "Authorization",
+          "IDENTITY-CONTEXT"
+        ]
+      },
+      "input": {
+        "root": {
+          "parentScenarioName": "@{parentScenarioName}",
+          "description": "@{description}",
+          "scenarioName": "@{scenarioId}"
+        }
+      },
+      "output": {},
+      "isAsync": false,
+      "asyncStatusUrlProperty": null,
+      "asyncCompletedStatusLabel": null,
+      "asyncResponseIdLabel": null,
+      "actorType": "EXTERNAL",
+      "asyncTimeout": 86400,
+      "asyncPollFrequency": 10,
+      "defVersion": "1.0.0"
+    },
+    {
+      "name": "testS_APPLY_LEVER",
+      "displayName": "Apply Lever",
+      "description": "Apply Lever",
+      "group": "lever-service",
+      "type": "Http",
+      "config": {
+        "domainUrl": "/test-supply/lever-icon/v1",
+        "endpoint": "/levers/apply",
+        "method": "POST",
+        "queryParams": [
+          ""
+        ],
+        "pathParams": [
+          ""
+        ],
+        "headers": [
+          "Authorization",
+          "IDENTITY-CONTEXT"
+        ]
+      },
+      "input": {
+        "root": {
+          "levers": "@{levers}",
+          "scenarioId": "@{scenarioId}"
+        }
+      },
+      "output": {},
+      "isAsync": true,
+      "asyncStatusUrlProperty": null,
+      "asyncCompletedStatusLabel": "COMPLETE",
+      "asyncResponseIdLabel": null,
+      "actorType": "EXTERNAL",
+      "asyncTimeout": 300,
+      "asyncPollFrequency": 10,
+      "defVersion": "1.0.0"
+    },
+    {
+      "name": "testS_MERGE_WRITEBACK2",
+      "displayName": "Merge writeback2 (RAW) data to curated (CRDT) table",
+      "description": "Merge writeback2 (RAW) data to curated (CRDT) table",
+      "group": "simulation-service",
+      "type": "Http",
+      "config": {
+        "domainUrl": "/test/foundation-simulation",
+        "endpoint": "/v1/scenarios/{scenarioId}/mergeWriteBack",
+        "method": "POST",
+        "queryParams": [
+          ""
+        ],
+        "pathParams": [
+          "scenarioId"
+        ],
+        "headers": [
+          "Authorization",
+          "IDENTITY-CONTEXT"
+        ]
+      },
+      "input": {},
+      "output": {},
+      "isAsync": true,
+      "asyncStatusUrlProperty": null,
+      "asyncCompletedStatusLabel": null,
+      "asyncResponseIdLabel": null,
+      "actorType": "EXTERNAL",
+      "asyncTimeout": 300,
+      "asyncPollFrequency": 10,
+      "defVersion": "1.0.0"
+    },
+    {
+      "name": "testS_GET_PLANNING_SPACE",
+      "displayName": "Get planning space",
+      "description": "Get planning space",
+      "group": "simulation-service",
+      "type": "Http",
+      "config": {
+        "domainUrl": "/test/foundation-simulation",
+        "endpoint": "/v1/scenarios/{scenarioId}/planningSpace",
+        "method": "GET",
+        "queryParams": [
+          ""
+        ],
+        "pathParams": [
+          "scenarioId"
+        ],
+        "headers": [
+          "Authorization",
+          "IDENTITY-CONTEXT"
+        ]
+      },
+      "input": {},
+      "output": {
+        "type": "object",
+        "properties": {
+          "schemaName": {
+            "type": "string"
+          }
+        }
+      },
+      "isAsync": false,
+      "asyncStatusUrlProperty": null,
+      "asyncCompletedStatusLabel": null,
+      "asyncResponseIdLabel": null,
+      "actorType": "EXTERNAL",
+      "asyncTimeout": 86400,
+      "asyncPollFrequency": 10,
+      "defVersion": "1.0.0"
+    },
+    {
+      "name": "testS_FORECAST_DATAVIEW",
+      "displayName": "Create FAAS SQL Query",
+      "description": "Create FAAS SQL Query",
+      "group": "simulation-service",
+      "type": "Http",
+      "config": {
+        "domainUrl": "/test/foundation-simulation",
+        "endpoint": "/v1/scenarios/{scenarioId}/forecast/dataView",
+        "method": "POST",
+        "queryParams": [
+          ""
+        ],
+        "pathParams": [
+          "scenarioId"
+        ],
+        "headers": [
+          "Authorization",
+          "IDENTITY-CONTEXT"
+        ]
+      },
+      "input": {},
+      "output": {},
+      "isAsync": false,
+      "asyncStatusUrlProperty": null,
+      "asyncCompletedStatusLabel": null,
+      "asyncResponseIdLabel": null,
+      "actorType": "EXTERNAL",
+      "asyncTimeout": 86400,
+      "asyncPollFrequency": 10,
+      "defVersion": "1.0.0"
+    },
+    {
+      "name": "Create_sparq_scn_expanded",
+      "displayName": "Create Sparq Scenario",
+      "description": "Create Sparq Scenario",
+      "group": "Simulation",
+      "type": "Http",
+      "config": {
+        "domainUrl": "/test-supply/sparq-icon/v1",
+        "endpoint": "/sparqEngines/{instanceId}/action",
+        "method": "POST",
+        "queryParams": [
+          ""
+        ],
+        "pathParams": [
+          "instanceId"
+        ],
+        "headers": [
+          "Authorization",
+          "IDENTITY-CONTEXT"
+        ]
+      },
+      "input": {
+        "root": {
+          "request": {
+            "reports": [
+              {
+                "division": "@{reportDivision}",
+                "scenario": "@{reportScenario}",
+                "records": [
+                  {
+                    "CHILDSCENARIONAME": "@{scenarioId}",
+                    "DESCRIPTION": "@{scenarioName}"
+                  }
+                ],
+                "name": "@{reportName}",
+                "type": "@{reportType}"
+              }
+            ],
+            "user": "@{user}",
+            "planner": "@{planner}"
+          }
+        }
+      },
+      "output": {},
+      "isAsync": false,
+      "asyncStatusUrlProperty": null,
+      "asyncCompletedStatusLabel": null,
+      "asyncResponseIdLabel": null,
+      "actorType": "EXTERNAL",
+      "asyncTimeout": 86400,
+      "asyncPollFrequency": 10,
+      "defVersion": "1.0.0"
+    },
+    {
+      "name": "testS_PLAN_BASE",
+      "displayName": "Plan Base",
+      "description": "Plan Base",
+      "group": "sparq-service",
+      "type": "Http",
+      "config": {
+        "domainUrl": "/test-supply/sparq-icon/v1",
+        "endpoint": "/sparqEngines/plan/base",
+        "method": "POST",
+        "queryParams": [
+          ""
+        ],
+        "pathParams": [
+          ""
+        ],
+        "headers": [
+          "Authorization",
+          "IDENTITY-CONTEXT"
+        ]
+      },
+      "input": {
+        "root": {
+          "horizon": "@{horizon}",
+          "scenarioId": "@{scenarioId}",
+          "startDate": "@{startDate}"
+        }
+      },
+      "output": {},
+      "isAsync": true,
+      "asyncStatusUrlProperty": null,
+      "asyncCompletedStatusLabel": "COMPLETE",
+      "asyncResponseIdLabel": null,
+      "actorType": "EXTERNAL",
+      "asyncTimeout": 600,
+      "asyncPollFrequency": 10,
+      "defVersion": "1.0.0"
+    },
+    {
+      "name": "Create_Scenario_1",
+      "displayName": "Create Scenario",
+      "description": "Create Scenario",
+      "group": "Simulation",
+      "type": "Http",
+      "config": {
+        "domainUrl": "/test/foundation-simulation",
+        "endpoint": "/v1/simulations",
+        "method": "POST",
+        "queryParams": [
+          ""
+        ],
+        "pathParams": [
+          ""
+        ],
+        "headers": [
+          "Authorization",
+          "IDENTITY-CONTEXT"
+        ]
+      },
+      "input": {
+        "root": {
+          "visibility": "@{visibility}",
+          "masterScope": "@{masterScope}",
+          "triggerType": "@{triggerType}",
+          "scenarioDescription": "@{scenarioDescription}",
+          "scenarioName": "@{scenarioName}",
+          "parentScenario": "@{parentScenario}",
+          "sourceContext": {
+            "sourceId": "@{sourceId}",
+            "sourceType": "@{sourceType}",
+            "planningModelId": "@{planningModelId}"
+          }
+        }
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "statusUrl": {
+            "type": "string"
+          },
+          "simulationId": {
+            "type": "string"
+          },
+          "scenarioId": {
+            "type": "string"
+          },
+          "scenarioName": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "isAsync": true,
+      "asyncStatusUrlProperty": null,
+      "asyncCompletedStatusLabel": null,
+      "asyncResponseIdLabel": null,
+      "actorType": "EXTERNAL",
+      "asyncTimeout": 3600,
+      "asyncPollFrequency": 10,
+      "defVersion": "1.0.0"
+    },
+    {
+      "name": "Supply_simulate_sparq",
+      "displayName": "Supply Simulate SPARQ",
+      "description": "Supply Simulate SPARQ",
+      "group": "Simulation",
+      "type": "Http",
+      "config": {
+        "domainUrl": "/test-supply/sparq-icon/v1",
+        "endpoint": "/sparqEngines/{instanceId}/action",
+        "method": "POST",
+        "queryParams": [
+          ""
+        ],
+        "pathParams": [
+          "instanceId"
+        ],
+        "headers": [
+          "Authorization",
+          "IDENTITY-CONTEXT"
+        ]
+      },
+      "input": {
+        "root": "@{supply_request}"
+      },
+      "output": {},
+      "isAsync": false,
+      "asyncStatusUrlProperty": null,
+      "asyncCompletedStatusLabel": null,
+      "asyncResponseIdLabel": null,
+      "actorType": "EXTERNAL",
+      "asyncTimeout": 86400,
+      "asyncPollFrequency": 10,
+      "defVersion": "1.0.0"
+    }
+  ],
+  "meta": {
+    "self": "/api/v1/actors",
+    "links": [
+      {
+        "rel": "self",
+        "href": "/api/v1/actors"
+      }
+    ],
+    "totalCount": 20
+  }
+}
