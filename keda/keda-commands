@@ -1,0 +1,1 @@
+az login --service-principal --username asp-user-name --password asp-password --tenant tenant-id

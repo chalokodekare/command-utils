@@ -1,0 +1,7 @@
+jcmd
+
+jcmd 33264 VM.flags
+
+jinfo 33264
+
+netstat -ano | findstr 1818 | findstr LISTENING

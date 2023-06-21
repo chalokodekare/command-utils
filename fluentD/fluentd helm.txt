@@ -1,0 +1,16 @@
+kubectl create namespace logging
+
+cat <<EOCONFIG | kubectl apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+# update the name if it's different
+name: container-repo
+namespace: logging
+type: kubernetes.io/dockerconfigjson
+data:
+.dockerconfigjson: eyJhdXRocyI6eyJkY3Rjb250YWluZXJyZWdpc3RyeS5henVyZWNyLmlvIjp7InVzZXJuYW1lIjoiZGN0Q29udGFpbmVyUmVnaXN0cnkiLCJwYXNzd29yZCI6Iko0ZVFsMGg5N3Q4ZENwYjVlTmFoTFc9NUFTdjlIT1pWIiwiZW1haWwiOiJsdW1zYWFzb3BzQGpkYS5jb20iLCJhdXRoIjoiWkdOMFEyOXVkR0ZwYm1WeVVtVm5hWE4wY25rNlNqUmxVV3d3YURrM2REaGtRM0JpTldWT1lXaE1WejAxUVZOMk9VaFBXbFk9In19fQ==
+EOCONFIG
+
+helm install --name logging ./logging
+

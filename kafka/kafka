@@ -1,0 +1,78 @@
+login
+ssh <username>@<cluster-header>.azurehdinsight.net
+
+setup
+cd /usr/hdp/current/kafka-broker/bin/
+export CLUSTERNAME=<cluster-name>
+export KAFKAZKHOSTS=`curl -sS -u <username> -G https://$CLUSTERNAME.azurehdinsight.net/api/v1/clusters/$CLUSTERNAME/services/ZOOKEEPER/components/ZOOKEEPER_SERVER | jq -r '["\(.host_components[].HostRoles.host_name):2181"] | join(",")'`
+export KAFKABROKERS=`curl -sS -u <username> -G https://$CLUSTERNAME.azurehdinsight.net/api/v1/clusters/$CLUSTERNAME/services/KAFKA/components/KAFKA_BROKER | jq -r '["\(.host_components[].HostRoles.host_name):9092"] | join(",")'`
+echo '$KAFKAZKHOSTS='$KAFKAZKHOSTS
+echo '$KAFKABROKERS='$KAFKABROKERS
+
+
+list of topics
+./kafka-topics.sh --list --zookeeper $KAFKAZKHOSTS
+
+list of consumer groups
+./kafka-consumer-groups.sh --list --bootstrap-server $KAFKABROKERS
+
+Find lag in a topic
+./kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --broker-info --group <consumer-group> --topic <topic-name> --zookeeper $KAFKAZKHOSTS
+
+Details of a topic
+./kafka-topics.sh --zookeeper $KAFKAZKHOSTS --describe --topic <topic-name>
+
+Look for information such as partitions, replication factor, ...etc.
+
+
+-------------------------------------------
+
+
+Kafka
+Increase partitions. Please note that decrease partitions is not that straight forward. You will have to delete and re-create topic with the reduced number of partition for that.
+
+./kafka-topics.sh --alter --zookeeper $KAFKAZKHOSTS --topic <topic> --partitions <number-of-partitions>
+
+
+Delete a topic
+
+./kafka-topics.sh --zookeeper $KAFKAZKHOSTS --delete --topic <topic-name>
+
+
+Create a topic
+
+./kafka-topics.sh --create --zookeeper $KAFKAZKHOSTS --replication-factor <replication-factor> --partitions <number-of-partitions> --topic <partitions>
+
+To purge messages in a topic, temporarily bring down the retention period. After a few minutes, remove the retention period change configuration.
+
+./kafka-configs.sh --zookeeper $KAFKAZKHOSTS --entity-type topics --alter --entity-name <topic-name> --add-config retention.ms=1000
+./kafka-topics.sh --zookeeper $KAFKAZKHOSTS --alter --topic <topic-name> --delete-config retention.ms
+
+Rest consumer offsets after a purge
+
+./kafka-consumer-groups.sh --bootstrap-server $KAFKABROKERS --group <consumer-group> --reset-offsets --to-earliest --topic <topic-name> --execute
+
+Dump messages in a topic.
+
+Do this from kafka controller to dump messages in topic to a file. (fourkites messages in this example)
+
+./kafka-console-consumer.sh --bootstrap-server $KAFKABROKERS --topic public.test.trackings.ingest --from-beginning > ~/fourkites.msg
+Then do this from your local machine to download that file.
+
+scp <username>@<cluster-header>.azurehdinsight.net:~/fourkites.msg .
+Please remember to delete the file from kafka controller when done - these files can be huge.
+
+
+
+Configurations
+To perform kafka server side configurations go to Azure --> HDInsight Kafka resource --> Ambari home
+
+To perform kafka (and other) client side configurations go to k8s web console. For that, run
+
+kubectl proxy
+in you machine and on a browser go to
+
+http://localhost:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy
+
+An example set configuration can be found here
+

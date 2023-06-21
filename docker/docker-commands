@@ -1,0 +1,9 @@
+az acr login --name acr-id
+
+gradle bootjar
+
+docker buildx build --build-arg app=service-name --build-arg version=2022.1.0-SNAPSHOT --tag service-name:tag-name .
+  
+docker tag service-name:tag-name acr-id.azurecr.io/service-name:tag-name
+
+docker push service-name:tag-name acr-id.azurecr.io/service-name:tag-name

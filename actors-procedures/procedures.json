@@ -1,0 +1,258 @@
+{
+	"procedures": [
+		{
+			"id": "49e3a42e-a7d8-448d-88cf-06dcee5168c6",
+			"name": "Supply_simulate",
+			"displayName": "Supply Simulate",
+			"summary": "Supply Simulate",
+			"triggerType": "MANUAL",
+			"workflowId": "642ab0483725770d419d0680",
+			"category": "Scenario",
+			"flow": [
+				{
+					"fromActor": "START",
+					"toActors": [
+						"Supply_simulate_sparq"
+					]
+				}
+			],
+			"procInput": {
+				"type": "object",
+				"properties": {
+					"sourceId": {
+						"type": "string"
+					},
+					"supply_request": {
+						"type": "object"
+					},
+					"instanceId": {
+						"type": "string"
+					},
+					"visibility": {
+						"type": "string"
+					},
+					"sourceType": {
+						"type": "string"
+					},
+					"masterScope": {
+						"type": "string"
+					},
+					"triggerType": {
+						"type": "string"
+					},
+					"scenarioDescription": {
+						"type": "string"
+					},
+					"scenarioName": {
+						"type": "string"
+					},
+					"parentScenario": {
+						"type": "string"
+					},
+					"planningModelId": {
+						"type": "string"
+					}
+				}
+			},
+			"procOutput": {},
+			"procTriggerInput": {},
+			"inputMappings": [
+				{
+					"actor": "Supply_simulate_sparq",
+					"payload": null,
+					"inputs": [
+						{
+							"key": "supply_request",
+							"keyMapping": "supply_request",
+							"value": "@{procInput.'supply_request'}"
+						},
+						{
+							"key": "instanceId",
+							"keyMapping": "instanceId",
+							"value": "@{procInput.'instanceId'}"
+						},
+						{
+							"key": "Authorization",
+							"keyMapping": "Authorization",
+							"value": "@{procInput.'AuthorizationHeader'}"
+						},
+						{
+							"key": "IDENTITY-CONTEXT",
+							"keyMapping": "IDENTITY-CONTEXT",
+							"value": "@{procInput.'UserIdentityContext'}"
+						}
+					]
+				}
+			],
+			"outputMappings": [],
+			"defVersion": "1.0.0"
+		},
+		{
+			"id": "696bcca8-d646-4423-ac0d-efc90e89381f",
+			"name": "Create_Scenario_Supply_NEW",
+			"displayName": "Create Scenario",
+			"summary": "Create Scenario",
+			"triggerType": "MANUAL",
+			"workflowId": "642e4514acecbc3df33c6953",
+			"category": "Scenario",
+			"flow": [
+				{
+					"fromActor": "START",
+					"toActors": [
+						"Create_Scenario_1"
+					]
+				},
+				{
+					"fromActor": "Create_Scenario_1",
+					"toActors": [
+						"Create_sparq_SCN_NEW"
+					]
+				}
+			],
+			"procInput": {
+				"type": "object",
+				"properties": {
+					"sourceId": {
+						"type": "string"
+					},
+					"supply_request": {
+						"type": "object"
+					},
+					"instanceId": {
+						"type": "string"
+					},
+					"visibility": {
+						"type": "string"
+					},
+					"sourceType": {
+						"type": "string"
+					},
+					"parentScenarioName": {
+						"type": "string"
+					},
+					"masterScope": {
+						"type": "string"
+					},
+					"triggerType": {
+						"type": "string"
+					},
+					"scenarioDescription": {
+						"type": "string"
+					},
+					"scenarioName": {
+						"type": "string"
+					},
+					"parentScenario": {
+						"type": "string"
+					},
+					"planningModelId": {
+						"type": "string"
+					}
+				}
+			},
+			"procOutput": {},
+			"procTriggerInput": {},
+			"inputMappings": [
+				{
+					"actor": "Create_Scenario_1",
+					"payload": null,
+					"inputs": [
+						{
+							"key": "sourceId",
+							"keyMapping": "sourceId",
+							"value": "@{procInput.'sourceId'}"
+						},
+						{
+							"key": "sourceType",
+							"keyMapping": "sourceType",
+							"value": "@{procInput.'sourceType'}"
+						},
+						{
+							"key": "scenarioName",
+							"keyMapping": "scenarioName",
+							"value": "@{procInput.'scenarioName'}"
+						},
+						{
+							"key": "scenarioDescription",
+							"keyMapping": "scenarioDescription",
+							"value": "@{procInput.'scenarioDescription'}"
+						},
+						{
+							"key": "parentScenario",
+							"keyMapping": "parentScenario",
+							"value": "@{procInput.'parentScenario'}"
+						},
+						{
+							"key": "planningModelId",
+							"keyMapping": "planningModelId",
+							"value": "@{procInput.'planningModelId'}"
+						},
+						{
+							"key": "masterScope",
+							"keyMapping": "masterScope",
+							"value": "@{procInput.'masterScope'}"
+						},
+						{
+							"key": "visibility",
+							"keyMapping": "visibility",
+							"value": "@{procInput.'visibility'}"
+						},
+						{
+							"key": "triggerType",
+							"keyMapping": "triggerType",
+							"value": "@{procInput.'triggerType'}"
+						},
+						{
+							"key": "Authorization",
+							"keyMapping": "Authorization",
+							"value": "@{procInput.'AuthorizationHeader'}"
+						},
+						{
+							"key": "IDENTITY-CONTEXT",
+							"keyMapping": "IDENTITY-CONTEXT",
+							"value": "@{procInput.'UserIdentityContext'}"
+						}
+					]
+				},
+				{
+					"actor": "Create_sparq_SCN_NEW",
+					"payload": null,
+					"inputs": [
+						{
+							"key": "scenarioId",
+							"keyMapping": "scenarioId",
+							"value": "@{body.'Create_Scenario_1'.'scenarioId'}"
+						},
+						{
+							"key": "description",
+							"keyMapping": "description",
+							"value": "@{procInput.'scenarioName'}"
+						},
+						{
+							"key": "parentScenarioName",
+							"keyMapping": "parentScenarioName",
+							"value": "@{procInput.'parentScenarioName'}"
+						},
+						{
+							"key": "instanceId",
+							"keyMapping": "instanceId",
+							"value": "@{procInput.'instanceId'}"
+						},
+						{
+							"key": "Authorization",
+							"keyMapping": "Authorization",
+							"value": "@{procInput.'AuthorizationHeader'}"
+						},
+						{
+							"key": "IDENTITY-CONTEXT",
+							"keyMapping": "IDENTITY-CONTEXT",
+							"value": "@{procInput.'UserIdentityContext'}"
+						}
+					]
+				}
+			],
+			"outputMappings": [],
+			"defVersion": "1.0.0"
+		}
+	]
+}

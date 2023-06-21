@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/test/v1/scenarios/([a-zA-Z0-9.-]*)/planningSpace"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\n  \"id\": \"b27daa9f-7512-4794-a2ca-cfe989c7dae1\",\n  \"scenarioId\": \"f0a27665-2a22-4f8f-836a-bf5df996c4b7\",\n  \"scenarioName\": \"SS1_1663920637258\",\n  \"schemaName\": \"CBP_SUPPLY_PLANNING_MODEL_DEV\",\n  \"status\": \"CREATED\",\n  \"active\": true\n}"
+  }
+}
